@@ -1,0 +1,8 @@
+{
+    "plus": 200,
+    "minus": 200,
+    "mul": 200,
+    "div": 200,
+    "workers": 10,
+    "timeout": 100000
+}
