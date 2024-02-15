@@ -12,6 +12,8 @@ import (
 	"agent/logging"
 )
 
+// all in & out requests structs
+
 type evalReqIn struct {
 	Op1     float64 `json:"op1"`
 	Op2     float64 `json:"op2"`
@@ -27,6 +29,9 @@ type evalReqOut struct {
 type statReqOut struct{
 	Msg string `json:"msg"`
 }
+// they end here
+
+// handlers for endpoints
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -36,12 +41,14 @@ func loggingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+// /status
 func statusHandler(w http.ResponseWriter, r *http.Request) {
 	e := statReqOut{"agent is running!"}
 	msg, _ := json.Marshal(e)
 	w.Write(msg)
 }
 
+// /eval
 func evalHandler(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var data evalReqIn

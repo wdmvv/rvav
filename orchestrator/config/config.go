@@ -1,11 +1,12 @@
 package config
 
 import (
-  "encoding/json"
-  "fmt"
-  "io"
-  "os"
-  "path/filepath"
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"sync"
 )
 
 type signConfig struct{
@@ -21,11 +22,13 @@ type Config struct{
 	Timeout int `json:"timeout"`
 }
 
+var RWLock sync.RWMutex // need it to change timeouts with no unexpected outcomes
 var signs signConfig
 var Conf Config
 
 //Read config and parse it into Config structure (which must be accessed later, not reinited)
 func NewConfig(path string) error{
+	RWLock = sync.RWMutex{}
 	wd, err := os.Getwd()
 	if err != nil{
 		return err
@@ -49,10 +52,10 @@ func NewConfig(path string) error{
 	}
 
 	mp := make(map[string]int)
-	mp["+"] = signs.Plus
-	mp["-"] = signs.Minus
-	mp["*"] = signs.Mul
-	mp["/"] = signs.Div
+	mp["plus"] = signs.Plus
+	mp["minus"] = signs.Minus
+	mp["mul"] = signs.Mul
+	mp["div"] = signs.Div
 
 	Conf.Signs = mp
 	return nil
