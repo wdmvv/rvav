@@ -24,6 +24,10 @@ type evalReqOut struct {
 	Errmsg string  `json:"errmsg"`
 }
 
+type statReqOut struct{
+	Msg string `json:"msg"`
+}
+
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		body, _ := io.ReadAll(r.Body)
@@ -33,7 +37,9 @@ func loggingMiddleware(next http.Handler) http.Handler {
 }
 
 func statusHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Agent is running!")
+	e := statReqOut{"agent is running!"}
+	msg, _ := json.Marshal(e)
+	w.Write(msg)
 }
 
 func evalHandler(w http.ResponseWriter, r *http.Request) {

@@ -9,16 +9,16 @@ import (
 )
 
 type signConfig struct{
-  Plus int `json:"plus"`
-  Minus int `json:"minus"`
-  Mul int `json:"mul"`
-  Div int `json:"div"`
+	Plus int `json:"plus"`
+	Minus int `json:"minus"`
+	Mul int `json:"mul"`
+	Div int `json:"div"`
 }
 
 type Config struct{
-  Signs map[string]int `json:"-"`
-  Workers int `json:"workers"`
-  Timeout int `json:"timeout"`
+	Signs map[string]int `json:"-"`
+	Workers int `json:"workers"`
+	Timeout int `json:"timeout"`
 }
 
 var signs signConfig
