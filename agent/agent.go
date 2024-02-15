@@ -20,7 +20,7 @@ func main() {
 	env := os.Getenv("MAX_WORKERS")
 	workers, err := strconv.ParseInt(env, 10, 64)
 	if err != nil {
-		logs.ReportAction("did not find env MAX_WORKERS, setting default 10")	
+		logs.ReportAction("did not find env MAX_WORKERS, setting default 10")
 		workers = 10
 	}
 	Limit = *semaphore.NewWeighted(workers)

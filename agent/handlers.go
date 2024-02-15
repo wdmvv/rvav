@@ -5,9 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
-	"io"
 
 	"agent/logging"
 )
@@ -25,13 +25,12 @@ type evalReqOut struct {
 }
 
 func loggingMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		body, _ := io.ReadAll(r.Body)
 		logs.ReportAction(fmt.Sprintf("%s %s %s", r.Method, r.URL.Path, string(body)))
-        next.ServeHTTP(w, r)
-	    })
+		next.ServeHTTP(w, r)
+	})
 }
-
 
 func statusHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Agent is running!")
