@@ -16,8 +16,9 @@ go get && go build
 
 # Endpoints (WIP)
 All requests have json body & response<br>
-Agent:<br>
-/eval - evalutes expression<br>
+## Agent:<br>
+### /eval
+Evalutes expression based on given info & has timeout<br>
 Request:<br>
 ```js
 {
@@ -34,7 +35,8 @@ Response:<br>
     "errmsg": string, // - error message if any
 }
 ```
-/status - check if agent is up<br>
+### /status
+Checks if agent is up, basically a pingpong<br>
 Request: None<br>
 Response:<br>
 ```js
