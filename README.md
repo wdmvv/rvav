@@ -2,7 +2,7 @@
 Has 2 entities: agent and orchestrator. Orchestrator splits equations, agent calculates. By default orchestrator launches on :8080, agent on :8081
 
 # Installation
-```
+```sh
 git clone https://github.com/wdmvv/rvav
 cd rvav
 # building agent
@@ -13,29 +13,35 @@ cd ../orchestrator
 go get && go build
 # you'll get 2 binaries - agent and orchestrator
 ```
+
 # Endpoints (WIP)
-All requests have json body & response
-Agent:
-/eval - evalutes expression
-Request:
+All requests have json body & response<br>
+Agent:<br>
+/eval - evalutes expression<br>
+Request:<br>
+```json
 {
     "op1": float64, - first operand
     "op2": float64, - second operand
     "sign": str, - sign, can be one of "+-*/"
     "timeout": int, - operation execution timeout
 }
-Response:
+```
+Response:<br>
+```json
 {
     "result": float64, - operation result,
     "errmsg": string, - error message if any
 }
-/status - check if agent is up
-Request: None
-Response:
+```
+/status - check if agent is up<br>
+Request: None<br>
+Response:<br>
+```json
 {
     "msg": string - just says "agent is running!"
 }
-
+```
 
 # "How does this work?"
 If I did not change anything these are orchestrator endpoints, visualized 
