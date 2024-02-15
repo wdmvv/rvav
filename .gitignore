@@ -9,8 +9,8 @@
 *.test
 
 # my bin files from go build
-./agent/agent
-./orchestrator/orchestrator
+agent/agent
+orchestrator/orchestrator
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 

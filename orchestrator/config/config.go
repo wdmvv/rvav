@@ -5,6 +5,7 @@ import (
   "fmt"
   "io"
   "os"
+  "path/filepath"
 )
 
 type signConfig struct{
@@ -25,29 +26,34 @@ var Conf Config
 
 //Read config and parse it into Config structure (which must be accessed later, not reinited)
 func NewConfig(path string) error{
-  f, err := os.Open(path)
-  if err != nil{
-    return fmt.Errorf("failed to read config file %s", path)
-  }
-  data, err := io.ReadAll(f)
-  if err != nil{
-    return fmt.Errorf("failed to read config file %s", path)
-  }
-  err = json.Unmarshal(data, &signs)
-  if err != nil{
-    return fmt.Errorf("failed to parse config %s", path)
-  }
-  err = json.Unmarshal(data, &Conf)
-  if err != nil{
-    return fmt.Errorf("failed to parse config %s", path)
-  }
+	wd, err := os.Getwd()
+	if err != nil{
+		return err
+	}
+	path = filepath.Join(wd, path)
+	f, err := os.Open(path)
+  	if err != nil{
+	    return fmt.Errorf("failed to read config file %s", path)
+  	}
+  	data, err := io.ReadAll(f)
+  	if err != nil{
+    	return fmt.Errorf("failed to read config file %s", path)
+	}
+	err = json.Unmarshal(data, &signs)
+	if err != nil{
+		return fmt.Errorf("failed to parse config %s", path)
+	}
+	err = json.Unmarshal(data, &Conf)
+	if err != nil{
+		return fmt.Errorf("failed to parse config %s", path)
+	}
 
-  mp := make(map[string]int)
-  mp["+"] = signs.Plus
-  mp["-"] = signs.Minus
-  mp["*"] = signs.Mul
-  mp["/"] = signs.Div
+	mp := make(map[string]int)
+	mp["+"] = signs.Plus
+	mp["-"] = signs.Minus
+	mp["*"] = signs.Mul
+	mp["/"] = signs.Div
 
-  Conf.Signs = mp
-  return nil
+	Conf.Signs = mp
+	return nil
 }
