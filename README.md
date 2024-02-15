@@ -19,27 +19,27 @@ All requests have json body & response<br>
 Agent:<br>
 /eval - evalutes expression<br>
 Request:<br>
-```json
+```js
 {
-    "op1": float64, - first operand
-    "op2": float64, - second operand
-    "sign": str, - sign, can be one of "+-*/"
-    "timeout": int, - operation execution timeout
+    "op1": float64, // - first operand
+    "op2": float64, // - second operand
+    "sign": str, // - sign, can be one of "+-*/"
+    "timeout": int, // - operation execution timeout
 }
 ```
 Response:<br>
-```json
+```js
 {
-    "result": float64, - operation result,
-    "errmsg": string, - error message if any
+    "result": float64, // - operation result,
+    "errmsg": string, // - error message if any
 }
 ```
 /status - check if agent is up<br>
 Request: None<br>
 Response:<br>
-```json
+```js
 {
-    "msg": string - just says "agent is running!"
+    "msg": string // just says "agent is running!"
 }
 ```
 
