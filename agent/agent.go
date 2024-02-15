@@ -2,20 +2,25 @@ package main
 
 // main load balancer
 import (
+	"agent/logging"
 	"fmt"
-	"golang.org/x/sync/semaphore"
 	"net/http"
 	"os"
 	"strconv"
+
+	"golang.org/x/sync/semaphore"
 )
 
 var Workers int
 var Limit semaphore.Weighted
 
 func main() {
+	logs.LoggerSetup()
+
 	env := os.Getenv("MAX_WORKERS")
 	workers, err := strconv.ParseInt(env, 10, 64)
 	if err != nil {
+		logs.ReportAction("did not find env MAX_WORKERS, setting default 10")	
 		workers = 10
 	}
 	Limit = *semaphore.NewWeighted(workers)
@@ -23,18 +28,13 @@ func main() {
 	mux := http.NewServeMux()
 	status := http.HandlerFunc(statusHandler)
 	eval := http.HandlerFunc(evalHandler)
-	mux.Handle("/status", status)
-	mux.Handle("/eval", eval)
-	fmt.Println("Started agent on 8081")
-	if err := http.ListenAndServe(":8081", mux); err != nil {
-		panic(err)
+
+	mux.Handle("/status", loggingMiddleware(status))
+	mux.Handle("/eval", loggingMiddleware(eval))
+
+	port := 8081
+	logs.ReportAction(fmt.Sprintf("started agent on %d", port))
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux); err != nil {
+		logs.ReportErr("error ocurred on agent", err)
 	}
 }
-
-// mux := http.NewServeMux()
-// 	helloHandler := http.HandlerFunc(HelloHandler)
-// 	mux.Handle("/", Sanitize(SetDefaultName(helloHandler)))
-
-// 	if err := http.ListenAndServe(":8080", mux); err != nil {
-// 		panic(err)
-// 	}

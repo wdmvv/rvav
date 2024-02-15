@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"io"
+
+	"agent/logging"
 )
 
 type evalReqIn struct {
@@ -21,6 +24,15 @@ type evalReqOut struct {
 	Errmsg string  `json:"errmsg"`
 }
 
+func loggingMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		logs.ReportAction(fmt.Sprintf("%s %s %s", r.Method, r.URL.Path, string(body)))
+        next.ServeHTTP(w, r)
+	    })
+}
+
+
 func statusHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Agent is running!")
 }
@@ -32,7 +44,7 @@ func evalHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		e := evalReqOut{0, fmt.Sprintf("failed to parse incoming json - %s", err)}
+		e := evalReqOut{0, "invalid request body"}
 		msg, _ := json.Marshal(e)
 		w.Write(msg)
 		return
