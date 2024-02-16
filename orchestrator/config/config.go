@@ -9,26 +9,25 @@ import (
 	"sync"
 )
 
-type signConfig struct{
+type SignConfig struct{
 	Plus int `json:"plus"`
 	Minus int `json:"minus"`
 	Mul int `json:"mul"`
 	Div int `json:"div"`
+	Lock sync.Mutex `json:"-"`
 }
 
 type Config struct{
-	Signs map[string]int `json:"-"`
+	Signs *SignConfig
 	Workers int `json:"workers"`
 	Timeout int `json:"timeout"`
 }
 
-var RWLock sync.RWMutex // need it to change timeouts with no unexpected outcomes
-var signs signConfig
+var signs SignConfig
 var Conf Config
 
 //Read config and parse it into Config structure (which must be accessed later, not reinited)
 func NewConfig(path string) error{
-	RWLock = sync.RWMutex{}
 	wd, err := os.Getwd()
 	if err != nil{
 		return err
@@ -46,17 +45,12 @@ func NewConfig(path string) error{
 	if err != nil{
 		return fmt.Errorf("failed to parse config %s", path)
 	}
+	signs.Lock = sync.Mutex{}
 	err = json.Unmarshal(data, &Conf)
 	if err != nil{
 		return fmt.Errorf("failed to parse config %s", path)
 	}
-
-	mp := make(map[string]int)
-	mp["plus"] = signs.Plus
-	mp["minus"] = signs.Minus
-	mp["mul"] = signs.Mul
-	mp["div"] = signs.Div
-
-	Conf.Signs = mp
+	Conf.Signs = &signs
+	
 	return nil
 }

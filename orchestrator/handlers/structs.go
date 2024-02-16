@@ -2,7 +2,7 @@ package handlers
 
 // for all request structs to be jsoned
 
-// /chtimeout
+// /chtime
 
 type ChtimeReqIn struct{
 	Sign string `json:"sign"`
@@ -10,11 +10,11 @@ type ChtimeReqIn struct{
 }
 
 type ChtimeReqOut struct{
-	Errmsg string `json:"errmsg"`
+	Error string `json:"error"`
 }
 
-// /timeouts
+// /status
 
-type TimeoutsReqOut struct{
-	Plus ""
+type StatusReqOut struct{
+	Msg string `json:"msg"`
 }

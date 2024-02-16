@@ -38,22 +38,22 @@ func (c *ChtimeReqIn) chsign() error{
 		return fmt.Errorf("operation timeout cannot be less than 0")
 	}
 	switch c.Sign{
-	case "plus":
-		config.RWLock.RLock()
-		config.Conf.Signs["plus"] = c.Ms
-		config.RWLock.Unlock()
+	case "plus":		
+		config.Conf.Signs.Lock.Lock()
+		config.Conf.Signs.Plus = c.Ms
+		config.Conf.Signs.Lock.Unlock()
 	case "minus":
-		config.RWLock.RLock()
-		config.Conf.Signs["minus"] = c.Ms
-		config.RWLock.Unlock()
+		config.Conf.Signs.Lock.Lock()
+		config.Conf.Signs.Minus = c.Ms
+		config.Conf.Signs.Lock.Unlock()
 	case "mul":
-		config.RWLock.RLock()
-		config.Conf.Signs["mul"] = c.Ms
-		config.RWLock.Unlock()
+		config.Conf.Signs.Lock.Lock()
+		config.Conf.Signs.Mul = c.Ms
+		config.Conf.Signs.Lock.Unlock()
 	case "div":
-		config.RWLock.RLock()
-		config.Conf.Signs["div"] = c.Ms
-		config.RWLock.Unlock()
+		config.Conf.Signs.Lock.Lock()
+		config.Conf.Signs.Div = c.Ms
+		config.Conf.Signs.Lock.Unlock()
 	default:
 		return fmt.Errorf("invalid sign %s", c.Sign)
 	}

@@ -1,15 +1,18 @@
 package main
 
 import (
+	"orchestrator/app"
 	"orchestrator/config"
 	"orchestrator/logging"
 )
 
-func main(){
+func main() {
 	err := config.NewConfig("config/orchestrator.json")
-	if err != nil{
+	if err != nil {
 		logs.ReportErr("failed to start config", err)
 		return
 	}
-	
+
+	app.BindEndpoints()
+	app.StartServer()
 }
