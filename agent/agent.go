@@ -2,7 +2,7 @@ package main
 
 // main load balancer
 import (
-	"agent/logging"
+	logs "agent/logging"
 	"fmt"
 	"net/http"
 	"os"
@@ -26,8 +26,8 @@ func main() {
 	Limit = *semaphore.NewWeighted(workers)
 
 	mux := http.NewServeMux()
-	status := http.HandlerFunc(statusHandler)
-	eval := http.HandlerFunc(evalHandler)
+	status := http.HandlerFunc(StatusHandler)
+	eval := http.HandlerFunc(EvalHandler)
 
 	mux.Handle("/status", loggingMiddleware(status))
 	mux.Handle("/eval", loggingMiddleware(eval))

@@ -5,11 +5,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"time"
 
-	"agent/logging"
+	logs "agent/logging"
 )
 
 // all in & out requests structs
@@ -26,30 +25,30 @@ type evalReqOut struct {
 	Errmsg string  `json:"errmsg"`
 }
 
-type statReqOut struct{
+type statReqOut struct {
 	Msg string `json:"msg"`
 }
+
 // they end here
 
 // handlers for endpoints
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		body, _ := io.ReadAll(r.Body)
-		logs.ReportAction(fmt.Sprintf("%s %s %s", r.Method, r.URL.Path, string(body)))
+		logs.ReportAction(fmt.Sprintf("%s %s", r.Method, r.URL.Path))
 		next.ServeHTTP(w, r)
 	})
 }
 
 // /status
-func statusHandler(w http.ResponseWriter, r *http.Request) {
+func StatusHandler(w http.ResponseWriter, r *http.Request) {
 	e := statReqOut{"agent is running!"}
 	msg, _ := json.Marshal(e)
 	w.Write(msg)
 }
 
 // /eval
-func evalHandler(w http.ResponseWriter, r *http.Request) {
+func EvalHandler(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var data evalReqIn
 	err := decoder.Decode(&data)
