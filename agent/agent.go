@@ -32,7 +32,7 @@ func main() {
 	mux.Handle("/status", loggingMiddleware(status))
 	mux.Handle("/eval", loggingMiddleware(eval))
 
-	port := 8081
+	port := 8001
 	logs.ReportAction(fmt.Sprintf("started agent on %d", port))
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux); err != nil {
 		logs.ReportErr("error ocurred on agent", err)

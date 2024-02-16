@@ -1,18 +1,19 @@
 package main
 
 import (
-	"orchestrator/app"
 	"orchestrator/config"
 	"orchestrator/logging"
+	"orchestrator/app"
 )
 
 func main() {
+	logs.LoggerSetup()
+	
 	err := config.NewConfig("config/orchestrator.json")
 	if err != nil {
 		logs.ReportErr("failed to start config", err)
 		return
 	}
 
-	app.BindEndpoints()
-	app.StartServer()
+	app.StartServer(8000)
 }

@@ -15,16 +15,14 @@ func ChtimeHandler(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		w.WriteHeader(http.StatusBadRequest)
 		e := ChtimeReqOut{"invalid request parameters"}
-		msg, _ := json.Marshal(e)
-		w.Write(msg)
+		WriteStruct(e, w, r)
 		return
 	}
 	err = data.chsign()
 	if err != nil{
 		w.WriteHeader(http.StatusBadRequest)
 		e := ChtimeReqOut{err.Error()}
-		msg, _ := json.Marshal(e)
-		w.Write(msg)
+		WriteStruct(e, w, r)
 		return
 	}
 
@@ -37,24 +35,24 @@ func (c *ChtimeReqIn) chsign() error{
 	if c.Ms < 0{
 		return fmt.Errorf("operation timeout cannot be less than 0")
 	}
-	switch c.Sign{
-	case "plus":		
+	sign := c.Sign
+	if sign == "plus" || sign == "+"{
 		config.Conf.Signs.Lock.Lock()
 		config.Conf.Signs.Plus = c.Ms
 		config.Conf.Signs.Lock.Unlock()
-	case "minus":
+	} else if sign == "minus" || sign == "-" {
 		config.Conf.Signs.Lock.Lock()
 		config.Conf.Signs.Minus = c.Ms
 		config.Conf.Signs.Lock.Unlock()
-	case "mul":
+	} else if sign == "mul" || sign == "*" {
 		config.Conf.Signs.Lock.Lock()
 		config.Conf.Signs.Mul = c.Ms
 		config.Conf.Signs.Lock.Unlock()
-	case "div":
+	} else if sign == "div" || sign == "/" {
 		config.Conf.Signs.Lock.Lock()
 		config.Conf.Signs.Div = c.Ms
 		config.Conf.Signs.Lock.Unlock()
-	default:
+	}else {
 		return fmt.Errorf("invalid sign %s", c.Sign)
 	}
 	return nil

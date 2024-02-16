@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"strings"
 )
 
 type SignConfig struct{
@@ -21,6 +22,7 @@ type Config struct{
 	Signs *SignConfig
 	Workers int `json:"workers"`
 	Timeout int `json:"timeout"`
+	AgentPort int `json:"agent_port"`
 }
 
 var signs SignConfig
@@ -53,4 +55,24 @@ func NewConfig(path string) error{
 	Conf.Signs = &signs
 	
 	return nil
+}
+
+// get sign timeout if it is valid
+func (c *Config) SignTimeout(sign string) (int, error){
+	sign = strings.ToLower(sign)
+	var err error
+	out := 0
+	
+	if sign == "plus" || sign == "+"{
+		out = c.Signs.Plus
+	} else if sign == "minus" || sign == "-"{
+		out = c.Signs.Minus
+	} else if sign == "mul" || sign == "*"{
+		out = c.Signs.Mul
+	} else if sign == "div" || sign == "/"{
+		out = c.Signs.Div
+	} else {
+		err = fmt.Errorf("invalid sign %s", sign)
+	}
+	return out, err
 }
