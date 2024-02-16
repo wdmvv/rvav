@@ -4,3 +4,4 @@
 [] Setup orch endpoints
 [] DB schema & conn
 [] Update zerolog err msg
+[] Somehow read req body in middleware without closing it 

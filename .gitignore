@@ -21,5 +21,5 @@ orchestrator/orchestrator
 # vendor/
 
 # Go workspace file
-# why? but ok
-go.work
+# go.work
+# ^ i'd rather have it included, will exclude if it is not really needed
