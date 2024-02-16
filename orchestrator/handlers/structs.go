@@ -15,6 +15,14 @@ type ChtimeReqOut struct{
 
 // /status
 
+type TimeoutsReqOut struct{
+	Plus int `json:"plus"`
+	Minus int `json:"minus"`
+	Mul int `json:"mul"`
+	Div int `json:"div"`
+}
+
+// /timeouts
 type StatusReqOut struct{
 	Msg string `json:"msg"`
 }

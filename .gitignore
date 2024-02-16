@@ -13,7 +13,8 @@ agent/agent
 orchestrator/orchestrator
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-
+#dunno who this is but get ignored
+.DS_Store
 # i mean you dont have to but why not
 *.sum
 
