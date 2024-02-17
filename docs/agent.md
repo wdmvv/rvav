@@ -7,7 +7,7 @@ Calculation is simple too, it tries to acquire semaphore to limit number of runn
 # Endpoints
 ## /status
 No req. body is expected<br>
-Returns:
+Response:
 ```js
 {
   "msg": str // string that says that it is up
@@ -23,7 +23,7 @@ Req. body:
   "timeout": int // operation timeout, i.e how for how long job is imitated
 }
 ```
-Returns:
+Response:
 ```js
 {
   "result": float64, //op result, 0 if error
