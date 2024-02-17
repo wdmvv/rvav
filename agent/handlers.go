@@ -7,8 +7,9 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"math"
 
-	logs "agent/logging"
+	"agent/logging"
 )
 
 // all in & out requests structs
@@ -95,6 +96,8 @@ func (e *evalReqIn) Eval() (float64, error) {
 	} else {
 		return 0, fmt.Errorf("invalid operator detected")
 	}
+	//precision moment, imagine better round function
+	res = math.Round(res * 100) / 100
 	time.Sleep(time.Duration(e.Timeout) * time.Millisecond)
 	return res, nil
 }

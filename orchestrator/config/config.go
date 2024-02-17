@@ -23,6 +23,11 @@ type Config struct{
 	Workers int `json:"workers"`
 	Timeout int `json:"timeout"`
 	AgentPort int `json:"agent_port"`
+	//db config
+	User string `json:"user"`
+	Pswd string `json:"password"`
+	DBname string `json:"dbname"`
+	TabName string `json:"tablename"`
 }
 
 var signs SignConfig

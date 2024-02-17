@@ -3,12 +3,15 @@ package calc
 // Package for converting infix to postfix & evaling it
 
 import (
+	"orchestrator/config"
+	"orchestrator/db"
+	"encoding/json"
+	"net/http"
+
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"net/http"
-	"orchestrator/config"
+
 	"strconv"
 	"time"
 )
@@ -63,7 +66,7 @@ func Eval(postfix []string) (float64, error) {
 			op2 := stack.Pop()
 			op1 := stack.Pop()
 
-			topush, err := calcOp(op1, op2, token)
+			topush, err := evalOP(op1, op2, token)
 			if err != nil{
 				return 0, err
 			}
@@ -76,8 +79,26 @@ func Eval(postfix []string) (float64, error) {
 	return stack.Top(), nil
 }
 
+// checks in db before agentOP
+func evalOP(op1, op2 float64, sign string) (float64, error){
+	expr := fmt.Sprintf("%f %f %s", op1, op2, sign)
+	exists, err := db.DBCOnn.ExprExists(expr)
+	if err != nil{
+		return 0, err
+	}
+	if exists{
+		return db.DBCOnn.GetExpr(expr)
+	}
+	res, err := agentOP(op1, op2, sign)
+	if err != nil{
+		return res, err
+	}
+	db.DBCOnn.SetExpr(expr, res)
+	return res, nil
+}
+
 // calculate operation by sending request to agent
-func calcOp(op1, op2 float64, sign string) (float64, error){
+func agentOP(op1, op2 float64, sign string) (float64, error){
 	timeout, err := config.Conf.SignTimeout(sign)
 	if err != nil{
 		return 0, err
