@@ -13,38 +13,6 @@ cd ../orchestrator
 go get && go build
 # you'll get 2 binaries - agent and orchestrator
 ```
-
-# Endpoints (WIP)
-All requests have json body & response<br>
-## Agent:<br>
-### /eval
-Evalutes expression based on given info & has timeout<br>
-Request:<br>
-```js
-{
-    "op1": float64, // - first operand
-    "op2": float64, // - second operand
-    "sign": str, // - sign, can be one of "+-*/"
-    "timeout": int, // - operation execution timeout
-}
-```
-Response:<br>
-```js
-{
-    "result": float64, // - operation result,
-    "errmsg": string, // - error message if any
-}
-```
-### /status
-Checks if agent is up, basically a pingpong<br>
-Request: None<br>
-Response:<br>
-```js
-{
-    "msg": string // just says "agent is running!"
-}
-```
-
 # "How does this work?"
 If I did not change anything these are orchestrator endpoints, visualized 
 ![image](./images/orchestrator.png)
@@ -52,3 +20,7 @@ Eval loop, i.e how does it calculate stuff
 ![image](./images/eval.png)
 And agent
 ![image](./images/agent.png)
+
+More detailed info on each(endpoints, structure and for what):<br>
+[For agent](/docs/agent.md)<br>
+[For orchestrator](/docs/orch.md)<br>
