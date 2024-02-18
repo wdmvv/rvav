@@ -1,5 +1,8 @@
 go 1.21.6
 
-use ./agent
+use (
+    ./agent
+    ./orchestrator
+    ./front
+)
 
-use ./orchestrator

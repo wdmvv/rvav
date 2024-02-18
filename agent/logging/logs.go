@@ -9,7 +9,7 @@ import (
 
 func LoggerSetup() {
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: "02-03-04-05-07"})
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: "02:03:04:05"})
 }
 
 func ReportErr(msg string, err error) {

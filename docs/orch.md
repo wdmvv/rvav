@@ -55,10 +55,12 @@ Response:
 ## /chtime
 Changes timeout of one operation(sign)<br>
 Req. body:
+```js
 {
   "sign": string, // can be either one of "+-*/" or ["plus", "minus", "mul", "div"]
   "ms": int //timeout, ms
 }
+```
 Response:
 ```js
 {
