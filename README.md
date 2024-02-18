@@ -16,7 +16,8 @@ go get && go build
 cd ../front && go build
 # will give you front binary, launch it along others and open in browser
 ```
-You'll also need psql running. Just set it up and make it work.<br>
+If you want, you can also launch it with database. In this case you have to set postgres up. If you dont want then set "usedb" in config to false<br>
+
 After setting everything up, fill in /config/orchestrator.json with your data on everything<br>
 To launch:
 ```sh

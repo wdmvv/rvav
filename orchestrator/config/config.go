@@ -24,6 +24,7 @@ type Config struct{
 	Timeout int `json:"timeout"`
 	AgentPort int `json:"agent_port"`
 	//db config
+	UseDB bool `json:"usedb"`
 	User string `json:"user"`
 	Pswd string `json:"password"`
 	DBname string `json:"dbname"`

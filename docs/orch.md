@@ -12,6 +12,7 @@ It is described on picture, but this one is more informative:<br>
     "timeout": int, // total expression calculation timeout 
     "agent_port": int, // on which port agent is running
     // DB config
+    "usedb": bool // whether you want to use db or not
     "user": string,
     "password": string,
     "dbname": string,

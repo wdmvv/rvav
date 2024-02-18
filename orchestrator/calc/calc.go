@@ -53,7 +53,7 @@ func InfixToPostfix(infix string) ([]string, error) {
 	return postfix, nil
 }
 
-// calculating postfix with goroutines (future)
+// calculating postfix with
 func Eval(postfix []string) (float64, error) {
 	stack := NewStack[float64]()
 	for _, token := range postfix {
@@ -82,19 +82,26 @@ func Eval(postfix []string) (float64, error) {
 // checks in db before agentOP
 func evalOP(op1, op2 float64, sign string) (float64, error){
 	expr := fmt.Sprintf("%f %f %s", op1, op2, sign)
-	exists, err := db.DBCOnn.ExprExists(expr)
-	if err != nil{
-		return 0, err
-	}
-	if exists{
-		return db.DBCOnn.GetExpr(expr)
+	if config.Conf.UseDB{
+		exists, err := db.DBCOnn.ExprExists(expr)
+		if err != nil{
+			return 0, err
+		}
+		if exists{
+			return db.DBCOnn.GetExpr(expr)
+		}
 	}
 	res, err := agentOP(op1, op2, sign)
 	if err != nil{
-		return res, err
+		return 0, err
 	}
-	db.DBCOnn.SetExpr(expr, res)
+	
+	if config.Conf.UseDB{
+		db.DBCOnn.SetExpr(expr, res)
+	}
+
 	return res, nil
+
 }
 
 // calculate operation by sending request to agent
