@@ -46,9 +46,15 @@ type AddExprReqOut struct {
 // for jobs handler/middle
 type JobsInfo struct {
 	Lock      sync.Mutex     `json:"-"`
-	Running   map[int]string `json:"running"`
-	Failed    map[int]string `json:"failed"`
-	Completed map[int]string `json:"completed"`
+	Running   map[int]Job `json:"running"`
+	Failed    map[int]Job `json:"failed"`
+	Completed map[int]Job `json:"completed"`
+}
+
+type Job struct{
+	Expr string `json:"expr"`
+	Start string `json:"start"`
+	End string `json:"end"`
 }
 
 // sneaky status code stealer

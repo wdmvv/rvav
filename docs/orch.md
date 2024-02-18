@@ -70,16 +70,39 @@ Calculates operation. Supports 4 operations and brackets. No floats, ints only.<
 Req. body:
 ```js
 {
-  "expr": string //expression to calculate
+  "expr": string, //expression to calculate
+  "id": int, // req. id
 }
 ```
 Response:
 ```js
 {
-  "result": float64 //calculation result
+  "result": float64, //calculation result
   "errmsg": string //err message if any
 }
 ```
+## /jobs
+Shows all expressions that were ever added. No req. body<br>
+Response:
+```js
+{
+    "running": {
+        <id1>:{
+            "expr": string,
+            "start": string,
+            "end": string,
+        },
+        <id2>:{
+            "expr": string,
+            "start": string,
+            "end": string,
+        } // and so on, completed and failed have the same structure
+    },
+    "completed":{}
+    "failed":{}
+}
+```
+
 # Structure 
 /app - endpoint bindings<br>
 /calc/ - for calculating expression, i.e converting to postfix, checking db and requesting agent<br>

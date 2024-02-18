@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"sync"
+	"time"
 )
 
 var Jobs *JobsInfo
@@ -48,25 +49,27 @@ func JobsLogger(next http.Handler) http.Handler {
 func addJob(data AddExprReqIn) {
 	Jobs.Lock.Lock()
 	defer Jobs.Lock.Unlock()
-	Jobs.Running[data.Id] = data.Expr
+	Jobs.Running[data.Id] = Job{data.Expr, time.Now().Format("02:03:04:05"), ""}
 }
 
 func moveFailed(data AddExprReqIn) {
 	Jobs.Lock.Lock()
 	defer Jobs.Lock.Unlock()
+	job := Jobs.Running[data.Id]
 	delete(Jobs.Running, data.Id)
-	Jobs.Failed[data.Id] = data.Expr
+	Jobs.Failed[data.Id] = Job{job.Expr, job.Start, time.Now().Format("02:03:04:05")}
 }
 
 func moveCompleted(data AddExprReqIn) {
 	Jobs.Lock.Lock()
 	defer Jobs.Lock.Unlock()
+	job := Jobs.Running[data.Id]
 	delete(Jobs.Running, data.Id)
-	Jobs.Completed[data.Id] = data.Expr
+	Jobs.Completed[data.Id] = Job{job.Expr, job.Start, time.Now().Format("02:03:04:05")}
 }
 
 func StartJobs() {
 	once.Do(func() {
-		Jobs = &JobsInfo{sync.Mutex{}, make(map[int]string), make(map[int]string), make(map[int]string)}
+		Jobs = &JobsInfo{sync.Mutex{}, make(map[int]Job), make(map[int]Job), make(map[int]Job)}
 	})
 }
