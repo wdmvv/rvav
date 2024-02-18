@@ -6,8 +6,8 @@
     "timeout": 100000,
     "agent_port": 8001,
     "usedb": true,
-    "user": "wdm",
+    "user": "",
     "password": "",
-    "dbname": "wdm",
-    "tablename": "exprdata"
+    "dbname": "",
+    "tablename": ""
 }
