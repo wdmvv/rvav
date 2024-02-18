@@ -34,7 +34,7 @@ func Set() {
 
 func (w *WorkersInfo) Task(expr string) {
 	w.limit.Acquire(context.Background(), 1)
-	start := time.Now().Format("02-03-04-05-07")
+	start := time.Now().Format("01/02 - 03:04:05")
 	w.lock.Lock()
 	defer w.lock.Unlock()
 	w.Current[expr] = start

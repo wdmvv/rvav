@@ -49,7 +49,7 @@ func JobsLogger(next http.Handler) http.Handler {
 func addJob(data AddExprReqIn) {
 	Jobs.Lock.Lock()
 	defer Jobs.Lock.Unlock()
-	Jobs.Running[data.Id] = Job{data.Expr, time.Now().Format("02:03:04:05"), ""}
+	Jobs.Running[data.Id] = Job{data.Expr, time.Now().Format("01/02 - 03:04:05"), ""}
 }
 
 func moveFailed(data AddExprReqIn) {
@@ -57,7 +57,7 @@ func moveFailed(data AddExprReqIn) {
 	defer Jobs.Lock.Unlock()
 	job := Jobs.Running[data.Id]
 	delete(Jobs.Running, data.Id)
-	Jobs.Failed[data.Id] = Job{job.Expr, job.Start, time.Now().Format("02:03:04:05")}
+	Jobs.Failed[data.Id] = Job{job.Expr, job.Start, time.Now().Format("01/02 - 03:04:05")}
 }
 
 func moveCompleted(data AddExprReqIn) {
@@ -65,7 +65,7 @@ func moveCompleted(data AddExprReqIn) {
 	defer Jobs.Lock.Unlock()
 	job := Jobs.Running[data.Id]
 	delete(Jobs.Running, data.Id)
-	Jobs.Completed[data.Id] = Job{job.Expr, job.Start, time.Now().Format("02:03:04:05")}
+	Jobs.Completed[data.Id] = Job{job.Expr, job.Start, time.Now().Format("01/02 - 03:04:05")}
 }
 
 func StartJobs() {

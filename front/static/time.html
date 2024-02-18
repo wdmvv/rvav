@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second Page</title>
+</head>
+<body>
+    <h2>Change Time</h2>
+    <form id="changeTimeForm">
+        <label for="sign">Sign:</label><br>
+        <input type="text" id="sign" name="sign"><br>
+        <label for="timeout">Timeout:</label><br>
+        <input type="number" id="timeout" name="timeout"><br><br>
+        <button type="button" onclick="changeTime()">Change Time</button>
+    </form>
+    <div id="errorMessage"></div>
+
+    <h2>Timeouts</h2>
+    <div id="timeoutValues"></div>
+    <button type="button" onclick="getTimeouts()">Get Timeouts</button>
+
+    <script>
+        function changeTime() {
+            var sign = document.getElementById("sign").value;
+            var timeout = parseInt(document.getElementById("timeout").value);
+
+            var data = {
+                "sign": sign,
+                "ms": timeout
+            };
+
+            fetch("http://127.0.0.1:8000/chtime", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errmsg) {
+                    document.getElementById("errorMessage").innerText = data.errmsg;
+                } else {
+                    document.getElementById("errorMessage").innerText = "";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function getTimeouts() {
+            fetch("http://127.0.0.1:8000/timeouts")
+            .then(response => response.json())
+            .then(data => {
+                var timeoutValues = document.getElementById("timeoutValues");
+                timeoutValues.innerHTML = "";
+                for (var key in data) {
+                    var p = document.createElement("p");
+                    p.innerText = key + ": " + data[key];
+                    timeoutValues.appendChild(p);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    <br>
+    <a href="http://127.0.0.1:7999/">Main page</a><br>
+    <a href="http://127.0.0.1:7999/expr">Set expressions</a><br>
+    <a href="http://127.0.0.1:7999/jobs">Check jobs and workers</a><br>
+</body>
+</html>

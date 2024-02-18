@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job and Worker Status</title>
+</head>
+<body>
+    <h1>Job Status</h1>
+    <div id="jobStatus"></div>
+    <button onclick="getJobStatus()">Get Job Status</button>
+
+    <h1>Worker Status</h1>
+    <div id="workerStatus"></div>
+    <button onclick="getWorkerStatus()">Get Worker Status</button>
+
+    <script>
+        function getJobStatus() {
+            fetch('http://127.0.0.1:8000/jobs')
+            .then(response => response.json())
+            .then(data => {
+                const jobStatus = document.getElementById('jobStatus');
+                jobStatus.innerHTML = '<h2>Running Jobs:</h2>';
+                for (const id in data.running) {
+                    const job = data.running[id];
+                    jobStatus.innerHTML += `
+                        <p>Job ID: ${id}</p>
+                        <p>Expression: ${job.expr}</p>
+                        <p>Start Time: ${job.start}</p>
+                        <p>End Time: ${job.end}</p>
+                        <hr>
+                    `;
+                }
+                jobStatus.innerHTML += '<h2>Completed Jobs:</h2>';
+                for (const id in data.completed) {
+                    const job = data.completed[id];
+                    jobStatus.innerHTML += `
+                        <p>Job ID: ${id}</p>
+                        <p>Expression: ${job.expr}</p>
+                        <p>Start Time: ${job.start}</p>
+                        <p>End Time: ${job.end}</p>
+                        <hr>
+                    `;
+                }
+                jobStatus.innerHTML += '<h2>Failed Jobs:</h2>';
+                for (const id in data.failed) {
+                    const job = data.failed[id];
+                    jobStatus.innerHTML += `
+                        <p>Job ID: ${id}</p>
+                        <p>Expression: ${job.expr}</p>
+                        <p>Start Time: ${job.start}</p>
+                        <p>End Time: ${job.end}</p>
+                        <hr>
+                    `;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getWorkerStatus() {
+            fetch('http://127.0.0.1:8001/workers')
+            .then(response => response.json())
+            .then(data => {
+                const workerStatus = document.getElementById('workerStatus');
+                workerStatus.innerHTML = '<h2>Current Workers:</h2>';
+                for (const expr in data.current) {
+                    const time = data.current[expr];
+                    workerStatus.innerHTML += `
+                        <p>Expression: ${expr}</p>
+                        <p>Added Time: ${time}</p>
+                        <hr>
+                    `;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <br>
+    <a href="http://127.0.0.1:7999/">Main page</a><br>
+    <a href="http://127.0.0.1:7999/expr">Set expressions</a><br>
+    <a href="http://127.0.0.1:7999/time">Change & view time</a><br>
+</body>
+</html>

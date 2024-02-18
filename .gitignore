@@ -11,6 +11,7 @@
 # my bin files from go build
 agent/agent
 orchestrator/orchestrator
+front/front
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 #dunno who this is but get ignored

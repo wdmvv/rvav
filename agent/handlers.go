@@ -32,6 +32,12 @@ type statReqOut struct {
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		logging.ReportAction(fmt.Sprintf("%s %s", r.Method, r.URL.Path))
 		next.ServeHTTP(w, r)
 	})

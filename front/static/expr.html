@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add expression</title>
+</head>
+<body>
+    <h2>Enter Expression</h2>
+    <form id="expressionForm">
+        <label for="expr">Expression:</label><br>
+        <input type="text" id="expr" name="expr"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="resultContainer"></div>
+
+    <script>
+        document.getElementById("expressionForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var expression = document.getElementById("expr").value;
+            var currentTime = new Date().getTime();
+
+
+            var resultContainer = document.getElementById("resultContainer");
+            resultContainer.innerText = "Calculating...";
+
+            var data = {
+                expr: expression,
+                id: parseInt(currentTime)
+            };
+
+            fetch("http://127.0.0.1:8000/addexpr", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                // Check if CORS headers are present
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                // Handle JSON response
+                handleResponse(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error if needed
+                resultContainer.innerText = "Error: " + error.message;
+            });
+        });
+
+        function handleResponse(data) {
+            var resultContainer = document.getElementById("resultContainer");
+
+            if (data.hasOwnProperty("result")) {
+                resultContainer.innerText = "Result: " + data.result;
+            } else if (data.hasOwnProperty("errmsg")) {
+                resultContainer.innerText = "Error: " + data.errmsg;
+            } else {
+                resultContainer.innerText = "Unknown response from server";
+            }
+        }
+    </script>
+    <br>
+    <a href="http://127.0.0.1:7999/">Main page</a><br>
+    <a href="http://127.0.0.1:7999/time">Change & view timeouts</a><br>
+    <a href="http://127.0.0.1:7999/jobs">Check jobs and workers</a><br>
+</body>
+</html>
