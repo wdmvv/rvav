@@ -2,7 +2,6 @@ package main
 
 //for handlers
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -10,6 +9,7 @@ import (
 	"math"
 
 	"agent/logging"
+	"agent/workers"
 )
 
 // all in & out requests structs
@@ -29,10 +29,6 @@ type evalReqOut struct {
 type statReqOut struct {
 	Msg string `json:"msg"`
 }
-
-// they end here
-
-// handlers for endpoints
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -61,9 +57,9 @@ func EvalHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write(msg)
 		return
 	}
-
-	Limit.Acquire(context.Background(), 1)
-	defer Limit.Release(1)
+	expr := fmt.Sprintf("%f %f %s", data.Op1, data.Op2, data.Sign)
+	workers.Info.Task(expr)
+	defer workers.Info.Expire(expr)
 
 	res, err := data.Eval()
 	if err != nil {
@@ -100,4 +96,9 @@ func (e *evalReqIn) Eval() (float64, error) {
 	res = math.Round(res * 100) / 100
 	time.Sleep(time.Duration(e.Timeout) * time.Millisecond)
 	return res, nil
+}
+
+func WorkHandler(w http.ResponseWriter, r *http.Request) {
+	msg, _ := json.Marshal(&workers.Info)
+	w.Write(msg)
 }

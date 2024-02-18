@@ -3,38 +3,12 @@ package main
 // main load balancer
 import (
 	logs "agent/logging"
-	"fmt"
-	"net/http"
-	"os"
-	"strconv"
-
-	"golang.org/x/sync/semaphore"
+	"agent/workers"
 )
-
-var Workers int
-var Limit semaphore.Weighted
 
 func main() {
 	logs.LoggerSetup()
+	workers.Set()
 
-	env := os.Getenv("MAX_WORKERS")
-	workers, err := strconv.ParseInt(env, 10, 64)
-	if err != nil {
-		logs.ReportAction("did not find env MAX_WORKERS, setting default 10")
-		workers = 10
-	}
-	Limit = *semaphore.NewWeighted(workers)
-
-	mux := http.NewServeMux()
-	status := http.HandlerFunc(StatusHandler)
-	eval := http.HandlerFunc(EvalHandler)
-
-	mux.Handle("/status", loggingMiddleware(status))
-	mux.Handle("/eval", loggingMiddleware(eval))
-
-	port := 8001
-	logs.ReportAction(fmt.Sprintf("started agent on %d", port))
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux); err != nil {
-		logs.ReportErr("error ocurred on agent", err)
-	}
+	StartServer(8001)
 }
