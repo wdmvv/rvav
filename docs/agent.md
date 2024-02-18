@@ -37,10 +37,11 @@ Response:
 ```js
 {
     "current":{
-        "expr":string //key is expression, value is time at which job was added
-        .
-        .
-        .
+        "expr": string //key is expression, value is time at which job was added
+        /*
+            there will be other expressions, so expr is not a key
+        */
+       "expr": string
     }
 }
 ```
