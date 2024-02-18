@@ -24,7 +24,10 @@ To launch:
 ```
 
 # "How does this work?"
-If I did not change anything these are orchestrator endpoints, visualized. Up-to-date endpoints [here](/docs/orch.md)
+![image](./images/total.png)
+
+Close-ups:<br>
+Orchestrator loop
 ![image](./images/orchestrator.png)
 Eval loop, i.e how does it calculate stuff
 ![image](./images/eval.png)
