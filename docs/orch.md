@@ -74,7 +74,7 @@ Req. body:
 ```js
 {
   "expr": string, //expression to calculate
-  "id": int, // req. id
+  "id": string, // req. id
 }
 ```
 Response:

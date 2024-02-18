@@ -5,7 +5,7 @@
     "div": 1000,
     "timeout": 100000,
     "agent_port": 8001,
-    "usedb": true,
+    "usedb": false,
     "user": "",
     "password": "",
     "dbname": "",

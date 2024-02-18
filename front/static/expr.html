@@ -21,14 +21,15 @@
 
             var expression = document.getElementById("expr").value;
             var currentTime = new Date().getTime();
-
+            var rand = Math.random().toString(36).substring(7);
+            var idd = currentTime + rand;
 
             var resultContainer = document.getElementById("resultContainer");
             resultContainer.innerText = "Calculating...";
 
             var data = {
                 expr: expression,
-                id: parseInt(currentTime)
+                id: idd
             };
 
             fetch("http://127.0.0.1:8000/addexpr", {
@@ -39,7 +40,6 @@
                 body: JSON.stringify(data)
             })
             .then(response => {
-                // Check if CORS headers are present
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -47,12 +47,10 @@
             })
             .then(data => {
                 console.log('Success:', data);
-                // Handle JSON response
                 handleResponse(data);
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Handle error if needed
                 resultContainer.innerText = "Error: " + error.message;
             });
         });

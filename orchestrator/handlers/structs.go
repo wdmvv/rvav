@@ -34,7 +34,7 @@ type StatusReqOut struct {
 
 // /addexpr
 type AddExprReqIn struct {
-	Id   int    `json:"id"`
+	Id   string    `json:"id"`
 	Expr string `json:"expr"`
 }
 
@@ -46,9 +46,9 @@ type AddExprReqOut struct {
 // for jobs handler/middle
 type JobsInfo struct {
 	Lock      sync.Mutex     `json:"-"`
-	Running   map[int]Job `json:"running"`
-	Failed    map[int]Job `json:"failed"`
-	Completed map[int]Job `json:"completed"`
+	Running   map[string]Job `json:"running"`
+	Failed    map[string]Job `json:"failed"`
+	Completed map[string]Job `json:"completed"`
 }
 
 type Job struct{

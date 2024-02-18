@@ -70,6 +70,6 @@ func moveCompleted(data AddExprReqIn) {
 
 func StartJobs() {
 	once.Do(func() {
-		Jobs = &JobsInfo{sync.Mutex{}, make(map[int]Job), make(map[int]Job), make(map[int]Job)}
+		Jobs = &JobsInfo{sync.Mutex{}, make(map[string]Job), make(map[string]Job), make(map[string]Job)}
 	})
 }
