@@ -6,7 +6,6 @@ import (
 
 // /status
 func StatusHandler(w http.ResponseWriter, r *http.Request) {
-
 	e := StatusReqOut{"orchestrator is running!"}
 	WriteStruct(e, w, r)
 }

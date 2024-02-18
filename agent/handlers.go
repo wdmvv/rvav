@@ -4,9 +4,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"net/http"
 	"time"
-	"math"
 
 	"agent/logging"
 	"agent/workers"
@@ -32,7 +32,7 @@ type statReqOut struct {
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logs.ReportAction(fmt.Sprintf("%s %s", r.Method, r.URL.Path))
+		logging.ReportAction(fmt.Sprintf("%s %s", r.Method, r.URL.Path))
 		next.ServeHTTP(w, r)
 	})
 }
@@ -93,7 +93,7 @@ func (e *evalReqIn) Eval() (float64, error) {
 		return 0, fmt.Errorf("invalid operator detected")
 	}
 	//precision moment, imagine better round function
-	res = math.Round(res * 100) / 100
+	res = math.Round(res*100) / 100
 	time.Sleep(time.Duration(e.Timeout) * time.Millisecond)
 	return res, nil
 }

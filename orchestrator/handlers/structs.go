@@ -4,41 +4,62 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"sync"
 )
 
 // /chtime
 
-type ChtimeReqIn struct{
+type ChtimeReqIn struct {
 	Sign string `json:"sign"`
-	Ms int `json:"ms"`
+	Ms   int    `json:"ms"`
 }
 
-type ChtimeReqOut struct{
+type ChtimeReqOut struct {
 	Error string `json:"error"`
 }
 
 // /status
 
-type TimeoutsReqOut struct{
-	Plus int `json:"plus"`
+type TimeoutsReqOut struct {
+	Plus  int `json:"plus"`
 	Minus int `json:"minus"`
-	Mul int `json:"mul"`
-	Div int `json:"div"`
+	Mul   int `json:"mul"`
+	Div   int `json:"div"`
 }
 
 // /timeouts
-type StatusReqOut struct{
+type StatusReqOut struct {
 	Msg string `json:"msg"`
 }
 
 // /addexpr
-type AddExprReqIn struct{
+type AddExprReqIn struct {
+	Id   int    `json:"id"`
 	Expr string `json:"expr"`
 }
 
-type AddExprReqOut struct{
+type AddExprReqOut struct {
 	Result float64 `json:"result"`
-	Errmsg string `json:"errmsg"`
+	Errmsg string  `json:"errmsg"`
+}
+
+// for jobs handler/middle
+type JobsInfo struct {
+	Lock      sync.Mutex     `json:"-"`
+	Running   map[int]string `json:"running"`
+	Failed    map[int]string `json:"failed"`
+	Completed map[int]string `json:"completed"`
+}
+
+// sneaky status code stealer
+type StatusRecorder struct {
+	http.ResponseWriter
+	Code int
+}
+
+func (rec *StatusRecorder) WriteHeader(code int) {
+	rec.Code = code
+	rec.ResponseWriter.WriteHeader(code)
 }
 
 // because i got tired of doing this manually every time i need to report error/anything

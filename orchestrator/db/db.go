@@ -16,7 +16,7 @@ type DBData struct{
 	conn *sql.DB
 }
 
-var DBCOnn DBData
+var DBCOnn *DBData
 
 func GetConn(user, password, dbname, tabname string) error{
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
@@ -32,7 +32,7 @@ func GetConn(user, password, dbname, tabname string) error{
 	dbdata.tabName = tabname
 	dbdata.conn = db
 
-	DBCOnn = dbdata
+	DBCOnn = &dbdata
 	return nil
 }
 

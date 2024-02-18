@@ -30,8 +30,8 @@ type Config struct{
 	TabName string `json:"tablename"`
 }
 
-var signs SignConfig
-var Conf Config
+var signs *SignConfig
+var Conf *Config
 
 //Read config and parse it into Config structure (which must be accessed later, not reinited)
 func NewConfig(path string) error{
@@ -57,7 +57,7 @@ func NewConfig(path string) error{
 	if err != nil{
 		return fmt.Errorf("failed to parse config %s", path)
 	}
-	Conf.Signs = &signs
+	Conf.Signs = signs
 	
 	return nil
 }

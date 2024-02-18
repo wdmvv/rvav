@@ -1,8 +1,7 @@
-package logs
+package logging
 
 import (
 	"os"
-	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -10,13 +9,13 @@ import (
 
 func LoggerSetup() {
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339})
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: "02-03-04-05-07"})
 }
 
-func ReportErr(msg string, err error){
+func ReportErr(msg string, err error) {
 	log.Err(err).Msg(msg)
 }
 
-func ReportAction(msg string){
+func ReportAction(msg string) {
 	log.Info().Msg(msg)
 }
