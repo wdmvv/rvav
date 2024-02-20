@@ -1,7 +1,7 @@
 # rvav
 Has 2 entities: agent and orchestrator. Orchestrator splits equations, agent calculates. By default orchestrator launches on :8080, agent on :8081
 
-If you have any question, please open issue on this repo - I will reply
+If you have any questions, please open issue on this repo - I will reply
 
 # Installation
 ```sh
