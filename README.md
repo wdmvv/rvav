@@ -30,6 +30,7 @@ To launch:
 # and frontend, is on port 7999
 ./front/front
 ```
+After that you can open your browser on http://127.0.0.1:7999 to see main page
 
 # "How does this work?"
 ![image](./images/total.png)
