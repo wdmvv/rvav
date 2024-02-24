@@ -25,11 +25,13 @@ To launch:
 ```sh
 # cds everywhere because I did not setup absolute paths :^(
 pwd # should say <some>/<path>/rvav
+
 # first you need agent running, is on port 8001
 cd agent && ./agent
+
 # and then orchestrator, is on port 8000
 cd orchestrator && ./orchestrator
-./orchestrator/orchestrator
+
 # and frontend, is on port 7999
 cd front && ./front
 
