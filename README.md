@@ -23,12 +23,16 @@ If you want, you can also launch it with database. In this case you have to set 
 After setting everything up, fill in /config/orchestrator.json with your data on everything<br>
 To launch:
 ```sh
+# cds everywhere because I did not setup absolute paths :^(
+pwd # should say <some>/<path>/rvav
 # first you need agent running, is on port 8001
-./agent/agent
+cd agent && ./agent
 # and then orchestrator, is on port 8000
+cd orchestrator && ./orchestrator
 ./orchestrator/orchestrator
 # and frontend, is on port 7999
-./front/front
+cd front && ./front
+
 ```
 After that you can open your browser on http://127.0.0.1:7999 to see main page
 
